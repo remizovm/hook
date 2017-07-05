@@ -16,17 +16,17 @@ pDrawIndexedPrimitive oDrawIndexedPrimitive;
 pEndScene oEndScene;
 pReset oReset;
 
-HMODULE hD3D11;
+HMODULE hD3D11;										//d3d11 vars init
 HINSTANCE               g_hInst = NULL;
 HWND                    g_hWnd = NULL;
 D3D_DRIVER_TYPE         g_driverType = D3D_DRIVER_TYPE_HARDWARE;
 D3D_FEATURE_LEVEL       g_featureLevel = D3D_FEATURE_LEVEL_11_0;
-ID3D11Device*           g_pd3dDevice = NULL;		// Устройство (для создания объектов)
-ID3D11DeviceContext*    g_pImmediateContext = NULL;	// Контекст устройства (рисование)
-IDXGISwapChain*         g_pSwapChain = NULL;		// Цепь связи (буфера с экраном)
-ID3D11RenderTargetView* g_pRenderTargetView = NULL;	// Объект заднего буфера
+ID3D11Device*           g_pd3dDevice = NULL;		
+ID3D11DeviceContext*    g_pImmediateContext = NULL;	
+IDXGISwapChain*         g_pSwapChain = NULL;		
+ID3D11RenderTargetView* g_pRenderTargetView = NULL;	
 
-HMODULE hD3D9;										//d3d9.dll vars
+HMODULE hD3D9;										//d3d9 vars init
 D3DVIEWPORT9 vpt;
 LPDIRECT3DTEXTURE9 green = NULL; 
 LPDIRECT3DTEXTURE9 pTx = NULL;
@@ -163,7 +163,7 @@ void GetDevice9Methods()
 void GetDevice11Methods()
 {
 	HRESULT hr = S_OK;
-	DXGI_SWAP_CHAIN_DESC sd;            // Структура, описывающая цепь связи (Swap Chain)
+	DXGI_SWAP_CHAIN_DESC sd;            
 	UINT createDeviceFlags = 0;
 	DWORD dip11 = 0;
 	D3D_FEATURE_LEVEL featureLevel[] = { D3D_FEATURE_LEVEL_11_0,};
@@ -176,19 +176,19 @@ void GetDevice11Methods()
 		0, 0, 0, 0, 0, 0);
 	hD3D11 = GetModuleHandleA("d3d11.dll");
 	ZeroMemory(&sd, sizeof(sd));
-	sd.BufferCount = 1;                               // у нас один задний буфер
-	//sd.BufferDesc.Width = width;                     // ширина буфера
-	//sd.BufferDesc.Height = height;                          // высота буфера
-	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;      // формат пикселя в буфере
-	sd.BufferDesc.RefreshRate.Numerator = 75;         // частота обновления экрана
+	sd.BufferCount = 1;                               
+	//sd.BufferDesc.Width = width;                     //TODO: delete this if probably
+	//sd.BufferDesc.Height = height;                          
+	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;      
+	sd.BufferDesc.RefreshRate.Numerator = 75;         
 	sd.BufferDesc.RefreshRate.Denominator = 1;
-	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // назначение буфера - задний буфер
-	sd.OutputWindow = g_hWnd;                               // привязываем к нашему окну
+	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; 
+	sd.OutputWindow = g_hWnd;                               
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
-	sd.Windowed = TRUE;                               // не полноэкранный режим
+	sd.Windowed = TRUE;                               
 	hr = D3D11CreateDeviceAndSwapChain(NULL, g_driverType, NULL, createDeviceFlags, featureLevel, numFeatureLevels, D3D11_SDK_VERSION, &sd, &g_pSwapChain, &g_pd3dDevice, &g_featureLevel, &g_pImmediateContext);
-	vtablePtr = (PDWORD)(*((PDWORD)g_pd3dDevice));
+	vtablePtr = (PDWORD)(*((PDWORD)g_pd3dDevice));			//TODO: fix vtablePtr
 	//dip11 = vtablePtr[82] - (DWORD)hD3D9;
 	//endScene11 = vtablePtr[42] - (DWORD)hD3D9;
 	//reset11 = vtablePtr[16] - (DWORD)hD3D9;
