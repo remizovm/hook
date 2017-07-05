@@ -21,6 +21,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			PostQuitMessage(0);
 			return 0;
 		}
+		case WM_CREATE:
+		{
+			HWND Button1 = CreateWindow(
+				L"BUTTON",  // Predefined class; Unicode assumed 
+				L"это рисует на DX9",      // Button text 
+				WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+				10,         // x position 
+				10,         // y position 
+				300,        // Button width
+				60,        // Button height
+				hWnd,     // Parent window
+				NULL,       // No menu.
+				(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+				NULL);      // Pointer not needed.
+			HWND Button2 = CreateWindow(
+				L"BUTTON",  // Predefined class; Unicode assumed 
+				L"это рисует на DX11",      // Button text 
+				WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+				320,         // x position 
+				10,         // y position 
+				300,        // Button width
+				60,        // Button height
+				hWnd,     // Parent window
+				NULL,       // No menu.
+				(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+				NULL);      // Pointer not needed.
+		}
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
@@ -66,9 +93,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 1;
 	}
 	ShowWindow(hWnd, nCmdShow);
-	//auto d3d9 = make_unique<D3D9>(hWnd);
-    //auto d3d11 = make_unique<D3D11>(hWnd);
+	auto d3d9 = make_unique<D3D9>(hWnd);
+	//auto d3d11 = make_unique<D3D11>(hWnd);
 	//d3d11->Init();
+	d3d9->Init();
 	MSG msg;
 	while ( 1 ) {
 		while ( PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) ) {
@@ -78,22 +106,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		if ( msg.message == WM_QUIT ) {
 			break;
 		}
-		//d3d9->Render();
+		d3d9->Render();
 		//d3d11->Render();
 	}
 
-	HWND hwndButton = CreateWindow(
-		L"BUTTON",  // Predefined class; Unicode assumed 
-		L"OK",      // Button text 
-		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
-		10,         // x position 
-		10,         // y position 
-		100,        // Button width
-		100,        // Button height
-		hWnd,     // Parent window
-		NULL,       // No menu.
-		(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
-		NULL);      // Pointer not needed.
 	//ShowWindow(hwndButton, nCmdShow);
 	return msg.wParam;
 }
