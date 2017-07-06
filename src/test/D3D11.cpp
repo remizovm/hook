@@ -5,6 +5,7 @@ D3D11::D3D11(HWND hWnd)
 {
 	g_hWnd = hWnd;
 }
+
 HRESULT D3D11::Init()
 {
 	HRESULT hr = S_OK;									//are all is ok? yes!
@@ -71,6 +72,7 @@ HRESULT D3D11::Init()
 	g_pImmediateContext->OMSetRenderTargets(1, &g_pRenderTargetView, NULL);
 
 	g_pImmediateContext->RSSetViewports(1, &vp);
+	return hr;
 }
 
 void D3D11::Render()
@@ -79,6 +81,7 @@ void D3D11::Render()
 	g_pImmediateContext->ClearRenderTargetView(g_pRenderTargetView, ClearColor);
 	g_pSwapChain->Present(0, 0);
 }
+
 void D3D11::CleanupDevice()
 {
 	if (g_pImmediateContext) g_pImmediateContext->ClearState();
