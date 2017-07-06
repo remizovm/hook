@@ -1,8 +1,9 @@
 #pragma once
 
 #include "stdafx.h"
+#include "D3D.h"
 
-class D3D11
+class D3D11 : public D3D
 {
 public:
 	D3D11(HWND hWnd);

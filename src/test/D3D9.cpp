@@ -5,6 +5,7 @@ D3D9::D3D9(HWND hWnd)
 {
 	g_hWnd = hWnd;
 }
+
 HRESULT D3D9::Init()
 {
 	HRESULT hres = S_OK;
@@ -43,11 +44,13 @@ void D3D9::Render()
 	d3ddev->EndScene();
 	d3ddev->Present(NULL, NULL, NULL, NULL);
 }
+
 void D3D9::CleanupDevice()
 {
 	if (d3ddev) d3ddev->Release();
 	if (d3d) d3d->Release();
 }
+
 D3D9::~D3D9()
 {
 	CleanupDevice();

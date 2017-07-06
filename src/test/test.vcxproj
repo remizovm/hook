@@ -119,6 +119,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="D3D.cpp" />
     <ClCompile Include="D3D11.cpp" />
     <ClCompile Include="D3D9.cpp" />
     <ClCompile Include="main.cpp" />
@@ -127,6 +128,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="D3D.h" />
     <ClInclude Include="D3D11.h" />
     <ClInclude Include="D3D9.h" />
     <ClInclude Include="stdafx.h" />
