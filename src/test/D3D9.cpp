@@ -33,7 +33,9 @@ HRESULT D3D9::Init()
 	// TODO: handle error
 	}
 	*/
+	return hres;
 }
+
 void D3D9::Render()
 {
 	d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 40, 100), 1.0f, 0);
