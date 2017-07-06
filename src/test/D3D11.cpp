@@ -12,7 +12,7 @@ HRESULT D3D11::Init()
 	RECT rc;											//window's rect settings
 	GetClientRect(g_hWnd, &rc);
 	UINT width = rc.right - rc.left;
-	UINT height = rc.bottom - rc.top-70;
+	UINT height = rc.bottom - rc.top;
 
 	UINT createDeviceFlags = 0;
 

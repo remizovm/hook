@@ -10,6 +10,8 @@ TODO:
 #include "D3D9.h"
 #include "D3D11.h"
 void HandleLastError(void);
+bool useDX9 = FALSE;
+bool useDX11 = FALSE;
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -32,7 +34,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				300,        // Button width
 				60,        // Button height
 				hWnd,     // Parent window
-				NULL,       // No menu.
+				(HMENU)9,       // No menu.
 				(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
 				NULL);      // Pointer not needed.
 			HWND Button2 = CreateWindow(
@@ -44,10 +46,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				300,        // Button width
 				60,        // Button height
 				hWnd,     // Parent window
-				NULL,       // No menu.
+				(HMENU)11,       // No menu.
 				(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
 				NULL);      // Pointer not needed.
+			return 0;
 		}
+		case WM_COMMAND:
+			if (LOWORD(wParam) == 9)
+			{
+				useDX9 = !useDX9;
+			}
+			else if (LOWORD(wParam) == 11)
+			{
+				useDX11 = !useDX11;
+			}
+			return 0;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
@@ -71,6 +84,7 @@ void HandleLastError(void)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+
 	WNDCLASSEX wc = { 0 };
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 	wc.cbSize = sizeof(WNDCLASSEX);
@@ -93,10 +107,35 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 1;
 	}
 	ShowWindow(hWnd, nCmdShow);
-	auto d3d9 = make_unique<D3D9>(hWnd);
-	//auto d3d11 = make_unique<D3D11>(hWnd);
-	//d3d11->Init();
+	HWND Button3 = CreateWindow(
+		L"Button",  // Predefined class; Unicode assumed 
+		L"",      // Button text 
+		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+		10,         // x position 
+		80,         // y position 
+		400,        // Button width
+		100,        // Button height
+		hWnd,     // Parent window
+		NULL,       // No menu.
+		(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+		NULL);      // Pointer not needed.
+	HWND Button4 = CreateWindow(
+		L"Button",  // Predefined class; Unicode assumed 
+		L"",      // Button text 
+		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+		10,         // x position 
+		200,         // y position 
+		400,        // Button width
+		100,        // Button height
+		hWnd,     // Parent window
+		NULL,       // No menu.
+		(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+		NULL);      // Pointer not needed.
+
+	auto d3d9 = make_unique<D3D9>(Button3);
 	d3d9->Init();
+	auto d3d11 = make_unique<D3D11>(Button4);
+	d3d11->Init();
 	MSG msg;
 	while ( 1 ) {
 		while ( PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) ) {
@@ -106,8 +145,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		if ( msg.message == WM_QUIT ) {
 			break;
 		}
-		d3d9->Render();
-		//d3d11->Render();
+		if (useDX9)
+			d3d9->Render();
+		if (useDX11)
+			d3d11->Render();
 	}
 
 	//ShowWindow(hwndButton, nCmdShow);

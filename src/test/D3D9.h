@@ -8,6 +8,7 @@ public:
 	D3D9(HWND hWnd);
 	HRESULT Init();
 	void Render();
+	void CleanupDevice();
 	~D3D9();
 
 private:

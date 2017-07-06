@@ -25,6 +25,7 @@ HRESULT D3D9::Init()
 			D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 			&d3dpp,
 			&d3ddev);
+		if (SUCCEEDED(hres)) break;
 	}
 	if (FAILED(hres)) return hres;
 	/*
@@ -40,9 +41,12 @@ void D3D9::Render()
 	d3ddev->EndScene();
 	d3ddev->Present(NULL, NULL, NULL, NULL);
 }
-
-D3D9::~D3D9()
+void D3D9::CleanupDevice()
 {
 	if (d3ddev) d3ddev->Release();
 	if (d3d) d3d->Release();
+}
+D3D9::~D3D9()
+{
+	CleanupDevice();
 }
